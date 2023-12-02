@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret Santa Answers</title>
+   <style>
+        body {
+            font-family: 'Trebuchet MS', sans-serif;
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-image: url('https://cdn.discordapp.com/attachments/998325891966976023/1180415385724518480/image.png?ex=657d567f&is=656ae17f&hm=1287562f173930e7c915b3c6968e77bc6206b557420e92af0d80664df50f8f66&'); /* Replace with the actual filename of your snowflake image */
+            background-size: cover;
+            background-color: #f2f2f2; /* Fallback background color */
+        }
+
+        h1 {
+            color: #cc0000; /* Christmas Red */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        select {
+            width: 200px;
+            padding: 5px;
+            background-color: #ffffff; /* White */
+            color: #cc0000; /* Christmas Red */
+            border: 2px solid #cc0000; /* Christmas Red */
+            border-radius: 5px;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #ffffff; /* White */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle box shadow */
+        }
+
+        /* Style for clickable links */
+        #result a {
+            color: #228b22; /* Forest Green */
+            text-decoration: underline;
+        }
+
+        /* Christmas-themed styles for answers */
+        strong {
+            color: #cc0000; /* Christmas Red */
+        }
+
+        p {
+            color: #006400; /* Dark Green */
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Secret Santa Answers</h1>
+
+    <label for="personSelector">Select a person:</label>
+    <select id="personSelector" onchange="displayAnswers()">
+        <option value="" selected disabled>Select your person's name</option>
+        <option value="Abby">Abby</option>
+        <option value="Angie">Angie</option>
+        <option value="Billy">Billy</option>
+        <option value="Cindy">Cindy</option>
+        <option value="Dedra">Dedra</option>
+        <option value="Doug">Doug</option>
+        <option value="Emma">Emma</option>
+        <option value="Erin">Erin</option>
+        <option value="Ian">Ian</option>
+        <option value="Jack">Jack</option>
+        <option value="Megan">Megan</option>
+        <option value="Miranda">Miranda</option>
+        <option value="James">James</option>
+        <!-- Add other person options as needed -->
+    </select>
+
+    <div id="result"></div>
+
+    <script>
+        var answersByPerson = {
+            "Abby": [
+                "I can never resist adding one of these to my collection",
+                "Vinyl record, Penguin Classic paperbacks (the black spine ones)",
+                "I love this, but never buy it for myself",
+                "Crochet tools/supplies, lined Moleskine notebooks, nice things for travel",
+                "In my spare time, you will find me doing this",
+                "Reading or making/listening to music",
+                "If you really want to know what is on my list, it’s this",
+                "Money? lol",
+                "But please stay away from this",
+                "Socks, PJs, makeup",
+                "Food/Candy",
+                "Snickers, Reese's",
+                "Color",
+                "Forest green or jewel tone colors",
+                "Magazine/Books",
+                "The New Yorker",
+                "Films/Television/Music",
+                "Too many to name, but I like to rent movies online when I can.",
+                "Sports Team",
+                "None",
+                "Beverage",
+                "Coffee, black tea",
+                "Store/Restaurant",
+                "Chickfila",
+                "Scent",
+                "Herbs/spices (lavender, sage, cinnamon)",
+                "Do you have any food allergies",
+                "No",
+                "Chocolate Yes/No",
+                "Yes",
+                "T-Shirt size",
+                "Medium",
+                "Anything else we should know",
+                "Here's my running wish list board on Pinterest: https://www.pinterest.com/abbycolex/wish-list/"
+            ],
+            // Add answers for other persons as needed
+            "Angie": [
+                "I can never resist adding one of these to my collection:",
+    "Blankets!",
+    "I love this, but never buy it for myself:",
+    "Gloves, beanies",
+    "In my spare time, you will find me doing this:",
+    "Reading or traveling",
+    "If you really want to know what is on my list, it’s this:",
+    "Lotion, audiobooks",
+    "But please stay away from this:",
+    "Perfume",
+    "Food/Candy:",
+    "Reese’s cups, peanut butter M&Ms, Werther's Original caramels",
+    "Color:",
+    "Purple or teal",
+    "Magazine/Books:",
+    "Almost anything book-wise - mainly fiction or autobiographies, romance, science fiction, fantasy, horror, suspense, comedy",
+    "Films/Television/Music:",
+    "Comedy, action, suspense for movies. Shinedown or similar for music, Disney music",
+    "Sports Team:",
+    "Cowboys",
+    "Beverage:",
+    "Sweet tea or Dr Pepper",
+    "Store/Restaurant:",
+    "Walmart or Target",
+    "Scent:",
+    "Hawaiian or sweet scents like fruits/flowers",
+    "Do you have any food allergies?",
+    "No",
+    "Chocolate Yes/No?",
+    "Yes",
+    "T-Shirt size?",
+    "Large or XL",
+    "Anything else we should know?",
+    "I’m easy to please!",
+            ],
+            "Billy": [
+                "I can never resist adding one of these to my collection:",
+    "fancy or unique kitchen tools, hand tools",
+    "I love this, but never buy it for myself:",
+    "Fancy coffee creamer; Griot's Garage car detailing",
+    "In my spare time, you will find me doing this:",
+    "listening to music, cleaning the car, working in the garage",
+    "If you really want to know what is on my list, it’s this:",
+    "quality not quantity :)",
+    "But please stay away from this:",
+    "peppermint flavors",
+    "Food/Candy:",
+    "Chocolate, Caramel, Peanut Butter",
+    "Color:",
+    "Blue",
+    "Magazine/Books:",
+    "GQ, The Atlantic, The New Yorker (long-form journalism)",
+    "Films/Television/Music:",
+    "Broadway",
+    "Sports Team:",
+    "Mavericks",
+    "Beverage:",
+    "Topo Chico (with lime or plain), coffee",
+    "Store/Restaurant:",
+    "Culver's, Mi Cocina, Chuy's",
+    "Scent:",
+    "Just try not to be noticed... :)",
+    "Do you have any food allergies?",
+    "No",
+    "Chocolate Yes/No?",
+    "Yes",
+    "T-Shirt size?",
+    "XL or XXL",
+    "Anything else we should know?",
+    "No"
+            ],
+            "Cindy": [
+    "I can never resist adding one of these to my collection:",
+    "Shells",
+    "I love this, but never buy it for myself:",
+    "Yahoo Chocolate Milk",
+    "In my spare time, you will find me doing this:",
+    "Reading",
+    "If you really want to know what is on my list, it’s this:",
+    "Comfort Wear",
+    "But please stay away from this:",
+    "Lickerish",
+    "Food/Candy:",
+    "TV Munchies, POP CORN",
+    "Color:",
+    "Aqua & Coral",
+    "Magazine/Books:",
+    "Christian Romance",
+    "Films/Television/Music:",
+    "Watching Hallmark Movies",
+    "Sports Team:",
+    "Cowboys & Mavericks",
+    "Beverage:",
+    "Tea and Water",
+    "Store/Restaurant:",
+    "Walmart/ Golden Corral",
+    "Scent:",
+    "Vanilla Fields",
+    "Do you have any food allergies?",
+    "No",
+    "Chocolate Yes/No?",
+    "Yes",
+    "T-Shirt size?",
+    "Large",
+    "Anything else we should know?",
+    "I Love Family Photos"
+            ],
+            "Dedra": [
+               "I can never resist adding one of these to my collection:",
+    "Books, of course.",
+    "I love this, but never buy it for myself:",
+    "Pretty wind chimes, but nothing too loud or delicate because we live in a wind tunnel. :)",
+    "In my spare time, you will find me doing this:",
+    "Reading, watching tv, or listening to music",
+    "If you really want to know what is on my list, it’s this:",
+    "Penguin Clothbound Classics - I own most of Jane Austen's books plus Wuthering Heights so far.",
+    "But please stay away from this:",
+    "Lotion - I have too much already. ;)",
+    "Food/Candy:",
+    "Chocolate-covered pretzels/Jelly Belly Jelly Beans",
+    "Color:",
+    "Teal, cinnamon orange",
+    "Magazine/Books:",
+    "I collect vintage novelization books from the 80s and 90s",
+    "Films/Television/Music:",
+    "Too many, but I would love to have any of the scratch-off posters to mark what I've seen, heard, or read.",
+    "Sports Team:",
+    "Mavericks",
+    "Beverage:",
+    "Chai tea",
+    "Store/Restaurant:",
+    "Homegoods/Jason's Deli",
+    "Scent:",
+    "Chai",
+    "Do you have any food allergies?",
+    "No",
+    "Chocolate Yes/No?",
+    "Yes",
+    "T-Shirt size?",
+    "Medium (in unisex) to Large if it runs small",
+    "Anything else we should know?",
+    "I have a book wish list on Amazon: https://www.amazon.com/hz/wishlist/ls/262JJ91SJBA73?ref_=wl_share"
+            ],
+            "Doug": [
+               "I can never resist adding one of these to my collection:",
+    "All kinds of tools",
+    "I love this, but never buy it for myself:",
+    "I buy myself too much, lol.",
+    "In my spare time, you will find me doing this:",
+    "Working in the shop and watching too much TV.",
+    "If you really want to know what is on my list, it’s this:",
+    "Anything Indy and Star Wars",
+    "But please stay away from this:",
+    "Dress socks",
+    "Food/Candy:",
+    "Dunkin, Reese's cups",
+    "Color:",
+    "Blue",
+    "Magazine/Books:",
+    "Auto and SciFi",
+    "Films/Television/Music:",
+    "Sci Fi",
+    "Sports Team:",
+    "None",
+    "Beverage:",
+    "Coffee!!",
+    "Store/Restaurant:",
+    "Coffee!!",
+    "Scent:",
+    "Coffee🤷‍♂️(I don't wear cologne lol)",
+    "Do you have any food allergies?",
+    "No",
+    "Chocolate Yes/No?",
+    "Yes",
+    "T-Shirt size?",
+    "Medium",
+    "Anything else we should know?",
+    "Coffee😎😉"
+            ],
+            "Emma": [
+    "I can never resist adding one of these to my collection:",
+    "A newly released Colourpop eyeshadow palette (I have most of the older ones, haven't bought a newly released palette in over a year)",
+    "I love this, but never buy it for myself:",
+    "A chunky cardigan (XXL)",
+    "In my spare time, you will find me doing this:",
+    "Relaxing at home in my PJs with a DW Home candle lit",
+    "If you really want to know what is on my list, it’s this:",
+    "Houseplants 😍",
+    "But please stay away from this:",
+    "Tight-fitting clothes and fruity candles, candy",
+    "Food/Candy:",
+    "Sushi",
+    "Color:",
+    "Any earthy tones!!!!!<3",
+    "Magazine/Books:",
+    "No thanks 🙃",
+    "Films/Television/Music:",
+    "The Office (US), Twenty One Pilots, Beach House",
+    "Sports Team:",
+    "Nope 😁",
+    "Beverage:",
+    "Dr Pepper",
+    "Store/Restaurant:",
+    "Kura Revolving Sushi Bar",
+    "Scent:",
+    "Herbs and spices, woodsy open airy scents",
+    "Do you have any food allergies?",
+    "No",
+    "Chocolate Yes/No?",
+    "No",
+    "T-Shirt size?",
+    "XXL",
+    "Anything else we should know?",
+    "Merry Christmas :) Here's my full Christmas list on Pinterest: https://pin.it/4DUR0GY"
+],
+            // Add Erin's Q&A
+"Erin": [
+    "I can never resist adding one of these to my collection:",
+    "Pokemon Cards",
+    "I love this, but never buy it for myself:",
+    "Hoodies",
+    "In my spare time, you will find me doing this:",
+    "Watching Pro Wrestling",
+    "If you really want to know what is on my list, it’s this:",
+    "All Elite Wrestling Merch",
+    "But please stay away from this:",
+    "-------",
+    "Food/Candy:",
+    "Reeses",
+    "Color:",
+    "Purple",
+    "Magazine/Books:",
+    "Graphic novels like Watchmen or Batman",
+    "Films/Television/Music:",
+    "I listen to rock music like Green Day, Metallica, and bands like that",
+    "Sports Team:",
+    "Rangers",
+    "Beverage:",
+    "Dr Pepper",
+    "Store/Restaurant:",
+    "--------",
+    "Scent:",
+    "--------",
+    "Do you have any food allergies?",
+    "No",
+    "Chocolate Yes/No?",
+    "Sure",
+    "T-Shirt size?",
+    "XL",
+    "Anything else we should know?",
+    "No",
+],
+
+            // Add Ian's Q&A
+"Ian": [
+    "I can never resist adding one of these to my collection:",
+    "Tools",
+    "I love this, but never buy it for myself:",
+    "Cold clothing🥶",
+    "In my spare time, you will find me doing this:",
+    "Working on my car or gaming",
+    "If you really want to know what is on my list, it’s this:",
+    "Gaming decorations",
+    "But please stay away from this:",
+    "Pineapples",
+    "Food/Candy:",
+    "Reese's pieces",
+    "Color:",
+    "Red",
+    "Magazine/Books:",
+    "Harry Potter",
+    "Films/Television/Music:",
+    "Harry Potter, Rick and Morty, Futurama, Snoop Doggy Dog",
+    "Sports Team:",
+    " ",
+    "Beverage:",
+    "Egg Nog",
+    "Store/Restaurant:",
+    "Golden Chick",
+    "Scent:",
+    "Versace",
+    "Do you have any food allergies?",
+    "No",
+    "Chocolate Yes/No?",
+    "No",
+    "T-Shirt size?",
+    "Large",
+    "Anything else we should know?",
+    "Swag",
+],
+
+            // Add Jack's Q&A
+"Jack": [
+    "I can never resist adding one of these to my collection:",
+    "Basketball Cards",
+    "I love this, but never buy it for myself:",
+    "Gift Cards",
+    "In my spare time, you will find me doing this:",
+    "Playing video games",
+    "If you really want to know what is on my list, it’s this:",
+    "Sports card packs",
+    "But please stay away from this:",
+    "Candy/Hard Food (braces!)",
+    "Color:",
+    "Blue",
+    "Magazine/Books:",
+    " ",
+    "Films/Television/Music:",
+    "Stranger Things",
+    "Sports Team:",
+    "Dallas Mavericks",
+    "Beverage:",
+    "Dr Pepper",
+    "Store/Restaurant:",
+    "Amazon/Chick-Fil-A/Starbucks",
+    "Scent:",
+    " ",
+    "Do you have any food allergies?",
+    "No",
+    "Chocolate Yes/No?",
+    "No",
+    "T-Shirt size?",
+    "Large",
+    "Anything else we should know?",
+    "No",
+],
+
+            // Add Megan's Q&A
+"Megan": [
+    "I can never resist adding one of these to my collection:",
+    "Horror movie collectibles (Especially Killer Klownz From Outer Space)",
+    "I love this, but never buy it for myself:",
+    "Car things/parts",
+    "In my spare time, you will find me doing this:",
+    "Painting/crafting",
+    "If you really want to know what is on my list, it’s this:",
+    "More crafting stuff or car things",
+    "But please stay away from this:",
+    "Anything sewing, girly stuff, mom stuff (I have enough mom stuff)",
+    "Food/Candy:",
+    "Sushi (lmao), dark dark chocolate, Reese's (not pieces though)",
+    "Color:",
+    "Red",
+    "Magazine/Books:",
+    "Edgar Allen Poe is really one of the few things I read. I don't read much",
+    "Films/Television/Music:",
+    "Adult animation (family guy, South Park, Rick and Morty), horror movies, Disney movies",
+    "Sports Team:",
+    "",
+    "Beverage:",
+    "Tequila.. or tea.. or coffee",
+    "Store/Restaurant:",
+    "Olive garden",
+    "Scent:",
+    "As far as candles go, lavender or something that smells like men's cologne",
+    "Do you have any food allergies?",
+    "Nope",
+    "Chocolate Yes/No?",
+    "Definitely",
+    "T-Shirt size?",
+    "XL",
+    "Anything else we should know?",
+    "I also really like witchy stuff, crystals, I like little writing journals with prompts cause I can never think of things to write. And I like cars. Just as much as Ian ☺️",
+],
+
+            // Add Miranda's Q&A
+"Miranda": [
+    "I can never resist adding one of these to my collection:",
+    "Squishmallow",
+    "I love this, but never buy it for myself:",
+    "Squishmallows",
+    "In my spare time, you will find me doing this:",
+    "Walk my dog",
+    "If you really want to know what is on my list, it’s this:",
+    "Twizzlers pull and peel",
+    "But please stay away from this:",
+    "Candles (I live in a dorm:( )",
+    "Food/Candy:",
+    "Xtreme rainbow sour strips",
+    "Color:",
+    "Purple",
+    "Magazine/Books:",
+    "Romance novels",
+    "Films/Television/Music:",
+    "The vampire diaries/ rap and pop music",
+    "Sports Team:",
+    "Dallas Cowboys",
+    "Beverage:",
+    "Orange Juice/ Dr Pepper",
+    "Store/Restaurant:",
+    "Walmart/Chilis",
+    "Scent:",
+    "Peppermint",
+    "Do you have any food allergies?",
+    "No",
+    "Chocolate Yes/No?",
+    "Yes",
+    "T-Shirt size?",
+    "M",
+    "Anything else we should know?",
+    "Nope! :)",
+],
+
+            // Add James's Q&A
+"James": [
+    "I can never resist adding one of these to my collection:",
+    "Classic cars",
+    "I love this, but never buy it for myself:",
+    "A classic 62 ford galaxy 500 with all the modern equipment, 406 ford engine with 3 duces, 4 speed transmission. Thank you.",
+    "In my spare time, you will find me doing this:",
+    "Reading, watching tv. Going to the doctor.",
+    "If you really want to know what is on my list, it’s this:",
+    "Classic cars.",
+    "But please stay away from this:",
+    "Tools",
+    "Food/Candy:",
+    "Blue",
+    "Color:",
+    "Blue",
+    "Magazine/Books:",
+    "Books",
+    "Films/Television/Music:",
+    "Roy Roger’s, classic country, Dolly Parton, etc.",
+    "Sports Team:",
+    "Mavs., NASCAR, Chase Elliott, Sprint cars, Kasey Kane",
+    "Beverage:",
+    "Milk shakes, zero sprite/7up, milk",
+    "Store/Restaurant:",
+    "Lowe’s, Home Depot, Denny’s, Dairy Queen, etc.",
+    "Scent:",
+    "Already sweet.",
+    "Do you have any food allergies?",
+    "No",
+    "Chocolate Yes/No?",
+    "Yes",
+    "T-Shirt size?",
+    "Large",
+    "Anything else we should know?",
+    "Yeh, I am 83 years old and on a downhill spiral, don’t need much.",
+],
+
+        };
+
+        function displayAnswers() {
+            var selector = document.getElementById("personSelector");
+            var resultDiv = document.getElementById("result");
+            var selectedPerson = selector.value;
+
+            // Display the selected person's answers
+            var answers = answersByPerson[selectedPerson] || [];
+
+            // Construct HTML for questions and answers
+            var html = "<h2>Answers:</h2>";
+            for (var i = 0; i < answers.length; i += 2) {
+                // Apply bold styling only to questions
+                html += "<p><strong>Q: " + answers[i] + "</strong></p>";
+                // Include the corresponding answer
+                html += "<p>A: " + answers[i + 1] + "</p>";
+            }
+
+            // Update the resultDiv with the constructed HTML
+            resultDiv.innerHTML = html;
+        }
+    </script>
+</body>
+
+</html>
